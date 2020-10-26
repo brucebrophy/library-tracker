@@ -9,17 +9,29 @@ export const UserContextProvider = ({ children }) => {
   const [tokens, setTokens] = useState(undefined);
 
   const handleTokenRefresh = async (tokens) => {
+    const userId = localStorage.getItem('userId');
+    
     // check if refresh token is expired
-    if(isAfter(tokens.refresh.expires, Date.now())) {
+    if (isAfter(tokens.refresh.expires, Date.now())) {
       handleLogout(); // logout
     }
 
-    const response = await Axios.post(`${process.env.REACT_APP_API_URL}/v1/auth/refresh-tokens`, { 
+    const tokenResponse = await Axios.post(`${process.env.REACT_APP_API_URL}/v1/auth/refresh-tokens`, { 
       refreshToken: tokens.refresh.token 
     });
 
-    setTokens(response.data);
-    localStorage.setItem('tokens', JSON.stringify(response.data));
+    setTokens(tokenResponse.data);
+    localStorage.setItem('tokens', JSON.stringify(tokenResponse.data));
+
+    if (!userData && userId) {
+      const userResponse = await Axios.get(`${process.env.REACT_APP_API_URL}/v1/users/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${tokens.access.token}`
+        }
+      });
+
+      setUserData(userResponse.data);
+    }
   };
 
   const handleLogin = async ({ email, password }) => {
@@ -28,10 +40,19 @@ export const UserContextProvider = ({ children }) => {
     setUserData(user);
     setTokens(tokens);
     localStorage.setItem('tokens', JSON.stringify(tokens));
+    localStorage.setItem('userId', user.id);
   };
 
   const handleLogout = async () => {
-    console.log('log out');
+    await Axios.post(`${process.env.REACT_APP_API_URL}/v1/auth/logout`, { 
+      refreshToken: tokens.refresh.token 
+    });
+
+    setTokens(undefined);
+    setUserData(undefined);
+
+    localStorage.removeItem('tokens');
+    localStorage.removeItem('userId');
   };
 
   useEffect(() => {
