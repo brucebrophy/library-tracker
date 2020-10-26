@@ -13,8 +13,8 @@ export const UserContextProvider = ({ children }) => {
     const userId = localStorage.getItem('userId');
     
     // check if refresh token is expired
-    if (isAfter(parseISO(tokens.refresh.expires), Date.now())) {
-      handleLogout(); // logout
+    if (isAfter(Date.now(), parseISO(tokens.refresh.expires))) {
+      return handleLogout(); // logout
     }
 
     const tokenResponse = await Axios.post(`${process.env.REACT_APP_API_URL}/v1/auth/refresh-tokens`, { 
@@ -54,8 +54,10 @@ export const UserContextProvider = ({ children }) => {
   };
 
   const handleLogout = async () => {
+    const storedTokens = JSON.parse(localStorage.getItem('tokens'));
+    
     await Axios.post(`${process.env.REACT_APP_API_URL}/v1/auth/logout`, { 
-      refreshToken: tokens.refresh.token 
+      refreshToken: storedTokens.refresh.token 
     });
 
     setTokens(undefined);
@@ -66,7 +68,7 @@ export const UserContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    let storedTokens = localStorage.getItem('tokens');
+    const storedTokens = localStorage.getItem('tokens');
     if (storedTokens) {
       handleTokenRefresh(JSON.parse(storedTokens));
     }
