@@ -1,5 +1,7 @@
 ## library-tracker
 
+MERN stack application to track books in a library
+
 ### Installation
 
 ```
