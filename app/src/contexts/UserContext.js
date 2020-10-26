@@ -34,6 +34,15 @@ export const UserContextProvider = ({ children }) => {
     }
   };
 
+  const handleRegister = async ({ name, email, password }) => {
+    const response = await Axios.post(`${process.env.REACT_APP_API_URL}/v1/auth/register`, { name, email, password});
+    const { user, tokens } = response.data;
+    setUserData(user);
+    setTokens(tokens);
+    localStorage.setItem('tokens', JSON.stringify(tokens));
+    localStorage.setItem('userId', user.id);
+  };
+
   const handleLogin = async ({ email, password }) => {
     const response = await Axios.post(`${process.env.REACT_APP_API_URL}/v1/auth/login`, { email, password});
     const { user, tokens } = response.data;
@@ -63,7 +72,7 @@ export const UserContextProvider = ({ children }) => {
   }, []);
   
   return (
-    <UserContext.Provider value={{ userData, handleLogin, handleLogout }}>
+    <UserContext.Provider value={{ userData, handleRegister, handleLogin, handleLogout }}>
       {children}
     </UserContext.Provider>
   );

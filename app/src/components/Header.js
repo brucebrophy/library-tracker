@@ -37,7 +37,7 @@ const Header = () => {
   return (
     <Container>
       <StyledHeader>
-        <Link class="logo" to="/">
+        <Link className="logo" to="/">
           <h1>Library Tracker</h1>
         </Link>
         <nav>
