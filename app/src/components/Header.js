@@ -8,6 +8,7 @@ import { DefaultButton } from '../styles/Buttons';
 const StyledHeader = styled.header`
   display: flex;
   justify-content: space-between;
+  padding: 4rem 0;
 
   .logo {
     text-decoration: none;
