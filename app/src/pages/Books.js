@@ -5,6 +5,7 @@ import { UserContext } from '../contexts/UserContext';
 import Container from '../styles/Container';
 import BookForm from '../components/BookForm';
 import BookItem from '../components/BookItem';
+import Pagination from '../components/Pagination';
 
 const PageHeader = styled.h1`
   font-size: 3rem;
@@ -17,8 +18,8 @@ const Books = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
 
-  const getBooks = async () => {
-    const response = await Axios.get(`${process.env.REACT_APP_API_URL}/v1/books/`, {
+  const getBooks = async (page = 1) => {
+    const response = await Axios.get(`${process.env.REACT_APP_API_URL}/v1/books?page=${page}`, {
       headers: {
         Authorization: `Bearer ${tokens.access.token}`
       }
@@ -43,6 +44,7 @@ const Books = () => {
       <BookForm addBook={addBook} />
       <PageHeader>Books</PageHeader>
       { books.map(book => <BookItem  key={book.id} book={book} />) }
+      <Pagination currentPage={currentPage} totalPages={totalPages} getBooks={getBooks} />
     </Container>
   );
 };
