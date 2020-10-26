@@ -2,8 +2,8 @@
 import styled from 'styled-components';
 
 const Container = styled.section`
-  display: inline-block;
   margin: 0 auto;
+  max-width: 1000px;
   padding: 4rem;
 `;
 
