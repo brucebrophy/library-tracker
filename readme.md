@@ -13,7 +13,7 @@ cd app && cp .env.example .env
 
 /*
 *
-* Note: You will need to add a MongoDB URL to server before continuing to the next steps
+* Note: You will need to add a MongoDB URL to server/.env before continuing to the next steps
 *
 */
 
