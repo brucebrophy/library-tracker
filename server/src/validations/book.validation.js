@@ -4,7 +4,6 @@ const createBook = {
   body: Joi.object().keys({
     title: Joi.string().required(),
     description: Joi.string().required(),
-    body: Joi.string().required(),
   }),
 };
 

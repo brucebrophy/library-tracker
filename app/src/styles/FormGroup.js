@@ -26,6 +26,7 @@ const FormGroup = styled.div`
     border: 0;
     width: 100%;
     background: #253341;
+    font-family: inherit;
     color: white;
     border-radius: 1rem;
     &:focus {
