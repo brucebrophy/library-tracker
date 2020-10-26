@@ -35,8 +35,8 @@ const Books = () => {
   }
 
   useEffect(() => {
-    getBooks();
-  }, []);
+    if (tokens) getBooks();
+  }, [tokens]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Container>

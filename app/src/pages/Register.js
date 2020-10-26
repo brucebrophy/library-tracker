@@ -31,8 +31,9 @@ const Register = () => {
         </FormGroup>
         <FormGroup>
           <label htmlFor="password">Password
-            <input type="password" name="password" id="password" ref={register({ required: true })} />
-            {errors.password && <span>Password field is required</span>}
+            <input type="password" name="password" id="password" ref={register({ required: true, minLength: 8 })} />
+            {errors.password && errors.password.type === "required" && <span>Password field is required</span>}
+            {errors.password && errors.password.type === "minLength" && <span>Password is too short</span>}
           </label>
         </FormGroup>
         <DefaultButton type="submit">Register</DefaultButton>

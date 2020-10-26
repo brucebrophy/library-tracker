@@ -1,6 +1,7 @@
 import { createContext, useState, useEffect } from 'react';
 import Axios from 'axios';
 import isAfter from 'date-fns/isAfter';
+import parseISO from 'date-fns/parseISO'
 
 export const UserContext = createContext();
 
@@ -12,7 +13,7 @@ export const UserContextProvider = ({ children }) => {
     const userId = localStorage.getItem('userId');
     
     // check if refresh token is expired
-    if (isAfter(tokens.refresh.expires, Date.now())) {
+    if (isAfter(parseISO(tokens.refresh.expires), Date.now())) {
       handleLogout(); // logout
     }
 
@@ -69,7 +70,7 @@ export const UserContextProvider = ({ children }) => {
     if (storedTokens) {
       handleTokenRefresh(JSON.parse(storedTokens));
     }
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
   
   return (
     <UserContext.Provider value={{ tokens, userData, handleRegister, handleLogin, handleLogout }}>
